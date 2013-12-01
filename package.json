@@ -1,6 +1,6 @@
 {
   "name": "datamap",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Define abstract interfaces around datasets",
   "main": "src/datamap.js",
   "directories": {
