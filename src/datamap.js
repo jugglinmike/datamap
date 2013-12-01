@@ -1,4 +1,13 @@
-(function(global, undefined) {
+(function (root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(factory);
+	} else if (typeof exports === 'object') {
+		module.exports = factory();
+	} else {
+		root.DataMap = factory();
+	}
+}(this, function() {
+
 'use strict';
 
 // Determine if the current environment satisfies d3.chart's requirements
@@ -125,6 +134,6 @@ DataMap.prototype.wrap = function(input) {
 	return wrapData.call(this, input);
 };
 
-global.DataMap = DataMap;
+return DataMap;
 
-}(this));
+}));

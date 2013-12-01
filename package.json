@@ -1,0 +1,44 @@
+{
+  "name": "datamap",
+  "version": "0.0.1",
+  "description": "Define abstract interfaces around datasets",
+  "main": "src/datamap.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha --ui tdd test/tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jugglinmike/datamap.git"
+  },
+  "keywords": [
+    "dataset",
+    "datasets"
+  ],
+  "author": "Mike Pennisi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jugglinmike/datamap/issues"
+  },
+  "devDependencies": {
+    "mocha": "~1.14.0"
+  },
+  "testling": {
+    "scripts": [
+      "src/datamap.js",
+      "test/lib/assert.js",
+      "test/tests.js"
+    ],
+    "browsers": [
+      "ie/8..latest",
+      "firefox/15",
+      "chrome/20",
+      "safari/5.0.5",
+      "opera/12",
+      "iphone/6"
+    ],
+    "harness": "mocha-tdd"
+  }
+}

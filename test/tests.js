@@ -1,4 +1,7 @@
 suite('DataMap', function() {
+	var global = (function() { return this; }());
+	var DataMap = global.DataMap || require('..');
+	var assert = global.assert || require('assert');
 
 	test('default mapping', function() {
 		var dm = new DataMap(['time', 'space']);
