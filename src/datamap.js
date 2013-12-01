@@ -1,4 +1,5 @@
 (function (root, factory) {
+	'use strict';
 	if (typeof define === 'function' && define.amd) {
 		define(factory);
 	} else if (typeof exports === 'object') {
@@ -49,7 +50,7 @@ var wrapDataImpls = {
 		return dataProxy;
 	},
 	legacy: function(dataPoint) {
-		var dataProxy, key, getter, dataMapping;
+		var dataProxy, getter, dataMapping;
 
 		if (typeof dataPoint !== 'object') {
 			return dataPoint;
@@ -90,22 +91,23 @@ function DataProxy() {}
 // Initialize a proxy object to facilitate data mapping
 var createDataProxy = function(attributes) {
 	var proxy = new DataProxy();
-	var getters;
 
-	attributes && attributes.forEach(function(attr) {
-		var getter = function() {
-			return this._dataPoint[attr];
-		};
+	if (attributes) {
+		attributes.forEach(function(attr) {
+			var getter = function() {
+				return this._dataPoint[attr];
+			};
 
-		if (hasDefineProp) {
-			Object.defineProperty(proxy, attr, {
-				get: getter,
-				configurable: true
-			});
-		} else {
-			proxy[attr] = getter;
-		}
-	}, this);
+			if (hasDefineProp) {
+				Object.defineProperty(proxy, attr, {
+					get: getter,
+					configurable: true
+				});
+			} else {
+				proxy[attr] = getter;
+			}
+		}, this);
+	}
 
 	return proxy;
 };
@@ -113,7 +115,7 @@ var createDataProxy = function(attributes) {
 function DataMap(attrs) {
 	this.attrs = attrs;
 	this.proxy = createDataProxy(attrs);
-};
+}
 
 DataMap.prototype.map = function(table) {
 	if (!hasDefineProp) {
