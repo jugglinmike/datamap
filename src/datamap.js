@@ -61,11 +61,11 @@ var wrapDataImpls = {
 		dataMapping = this._dataMapping;
 
 		if (!dataMapping) {
-			this.dataAttrs.forEach(function(key) {
+			this.attrs.forEach(function(key) {
 				dataProxy[key] = dataPoint[key];
 			});
 		} else {
-			this.dataAttrs.forEach(function(key) {
+			this.attrs.forEach(function(key) {
 				getter = dataMapping[key];
 				if (getter) {
 					dataProxy[key] = getter.call(dataPoint);
@@ -110,20 +110,23 @@ var createDataProxy = function(attributes) {
 	return proxy;
 };
 
-
 function DataMap(attrs) {
+	this.attrs = attrs;
 	this.proxy = createDataProxy(attrs);
 };
 
 DataMap.prototype.map = function(table) {
-	Object.keys(table).forEach(function(attr) {
-		Object.defineProperty(this.proxy, attr, {
-			get: function() {
-				return table[attr].call(this._dataPoint);
-			},
-			configurable: false
-		});
-	}, this);
+	if (!hasDefineProp) {
+		this._dataMapping = table;
+	} else {
+		Object.keys(table).forEach(function(attr) {
+			Object.defineProperty(this.proxy, attr, {
+				get: function() {
+					return table[attr].call(this._dataPoint);
+				}
+			});
+		}, this);
+	}
 };
 
 DataMap.prototype.wrap = function(input) {
