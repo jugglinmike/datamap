@@ -32,8 +32,7 @@ suite('DataMap', function() {
 		assert.equal(transformed[1].space, 99);
 	});
 
-	// TODO: Get this to pass
-	test.skip('nesting', function() {
+	test('nesting', function() {
 		var dm1 = new DataMap(['series1', 'series2']);
 		var dm2 = new DataMap(['time', 'space']);
 		var input = {
@@ -43,12 +42,10 @@ suite('DataMap', function() {
 			],
 			series2: []
 		};
-		dm1.map({ series1: function() { console.log(this);return this.first; }});
+		dm1.map({ series1: function() { return dm2.wrap(this.first); }});
 		dm2.map({ time: function() { return this.foo; }});
 
-		var transformed = input;
-		transformed = dm1.wrap(transformed);
-		transformed = dm2.wrap(transformed);
+		var transformed = dm1.wrap(input);
 
 		assert.equal(transformed.series1[0].time, 23);
 		assert.equal(transformed.series1[0].space, 45);
