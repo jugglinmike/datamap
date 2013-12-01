@@ -10,13 +10,11 @@
 
 'use strict';
 
-// Determine if the current environment satisfies d3.chart's requirements
-// for ECMAScript 5 compliance.
-var isES5 = (function() {
-	var obj;
+var hasDefineProp = (function() {
+	var obj = {};
 	try {
-		obj = Object.defineProperty({}, 'test', {
-			get: function() { return true; }
+		Object.defineProperty(obj, 'test', {
+			get: function() { return true; },
 		});
 	} catch(err) {
 		return false;
@@ -40,6 +38,7 @@ var wrapDataImpls = {
 			return dataPoint;
 		}
 		var dataProxy = Object.create(this.proxy);
+
 		if (dataPoint instanceof DataProxy) {
 			// TODO: Ensure that the data proxy inherits from both the data
 			// point and the instance's data proxy.
@@ -80,7 +79,7 @@ var wrapDataImpls = {
 	}
 };
 
-var wrapData = wrapDataImpls[ isES5 ? 'ES5' : 'legacy' ];
+var wrapData = wrapDataImpls[ hasDefineProp ? 'ES5' : 'legacy' ];
 
 // We only need a basic object literal to use a data proxy, but instantiating
 // it with a custom constructor allows us to more intuitively detect instances
@@ -93,12 +92,12 @@ var createDataProxy = function(attributes) {
 	var proxy = new DataProxy();
 	var getters;
 
-	attributes.forEach(function(attr) {
+	attributes && attributes.forEach(function(attr) {
 		var getter = function() {
 			return this._dataPoint[attr];
 		};
 
-		if (isES5) {
+		if (hasDefineProp) {
 			Object.defineProperty(proxy, attr, {
 				get: getter,
 				configurable: true
