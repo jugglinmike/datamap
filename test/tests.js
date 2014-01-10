@@ -35,6 +35,18 @@ suite('DataMap', function() {
 		assert.equal(transformed[1].space, 99);
 	});
 
+	test('primitive values pass through', function() {
+		var dm = new DataMap([]);
+		var input = [1, 2, 3];
+		dm.map({});
+
+		var transformed = dm.wrap(input);
+
+		assert.equal(transformed[0], 1);
+		assert.equal(transformed[1], 2);
+		assert.equal(transformed[2], 3);
+	});
+
 	test('nesting', function() {
 		var dm1 = new DataMap(['series1', 'series2']);
 		var dm2 = new DataMap(['time', 'space']);
